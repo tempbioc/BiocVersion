@@ -17,7 +17,7 @@ jobs:
         config:
           #- {os: macOS-latest,   r: 'release'}
           #- {os: windows-latest, r: 'release'}
-          - {type: 'test', os: 'ubuntu-latest', container: 'ghcr.io/bioconductor/bioconductor_salt:22.04-bioc-3.18', user: 'biocbuild'}
+          - {type: 'test', os: 'ubuntu-latest', container: 'ghcr.io/bioconductor/bioconductor_salt:22.04-bioc-3.18', user: 'root'}
           - {type: 'binary-build', os: 'ubuntu-latest', container: 'bioconductor/bioconductor:3.18', user: 'root'}
           - {type: 'deb-build', os: 'ubuntu-latest', container: 'ghcr.io/bioconductor/bioc2u-builder:jammy-bioc-3.18-r-4.3.2', user: 'root'}
     steps:
@@ -37,10 +37,11 @@ jobs:
       - if: matrix.config.type == 'test'
         run: |
           cd ..
+          su biocbuild
           BBS_R_PATH=$(echo /home/biocbuild/bbs-*-bioc/R)
           $BBS_R_PATH/bin/R CMD INSTALL ${{steps.common.outputs.pkg}} &> ${{steps.common.outputs.logdir}}/${{steps.common.outputs.pkg}}-install.log
           $BBS_R_PATH/bin/R CMD build --keep-empty-dirs --no-resave-data ${{steps.common.outputs.pkg}} &> ${{steps.common.outputs.logdir}}/${{steps.common.outputs.pkg}}-build.log
-          TARNAME="${PKG}_$(grep '^Version: ' ${{steps.common.outputs.pkg}}/DESCRIPTION | awk '{print $NF}').tar.gz"
+          TARNAME="${{steps.common.outputs.pkg}}_$(grep '^Version: ' ${{steps.common.outputs.pkg}}/DESCRIPTION | awk '{print $NF}').tar.gz"
           $BBS_R_PATH/bin/R CMD check --install=check:${{steps.common.outputs.logdir}}/${{steps.common.outputs.pkg}}-install.log --library=$BBS_R_PATH/site-library --timings $TARNAME &> ${{steps.common.outputs.logdir}}/${{steps.common.outputs.pkg}}-check.log
           mv $TARNAME ${{steps.common.outputs.outdir}}/
 
