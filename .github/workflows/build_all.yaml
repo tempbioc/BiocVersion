@@ -9,6 +9,7 @@ jobs:
     runs-on: ${{ matrix.config.os }}
     container:
       image: ${{ matrix.config.container }}
+      options: --user ${{matrix.config.user}}
     name: ${{ matrix.config.os }} (${{ matrix.config.r }})
     strategy:
       fail-fast: false
@@ -16,9 +17,9 @@ jobs:
         config:
           #- {os: macOS-latest,   r: 'release'}
           #- {os: windows-latest, r: 'release'}
-          - {type: 'test', os: 'ubuntu-latest', container: 'ghcr.io/bioconductor/bioconductor_salt:22.04-bioc-3.18'}
-          - {type: 'binary-build', os: 'ubuntu-latest', container: 'bioconductor/bioconductor:3.18'}
-          - {type: 'deb-build', os: 'ubuntu-latest', container: 'ghcr.io/bioconductor/bioc2u-builder:jammy-bioc-3.18-r-4.3.2'}
+          - {type: 'test', os: 'ubuntu-latest', container: 'ghcr.io/bioconductor/bioconductor_salt:22.04-bioc-3.18', user: 'biocbuild'}
+          - {type: 'binary-build', os: 'ubuntu-latest', container: 'bioconductor/bioconductor:3.18', user: 'root'}
+          - {type: 'deb-build', os: 'ubuntu-latest', container: 'ghcr.io/bioconductor/bioc2u-builder:jammy-bioc-3.18-r-4.3.2', user: 'root'}
     steps:
       - uses: actions/checkout@v4
 
@@ -46,7 +47,7 @@ jobs:
       - if: matrix.config.type == 'binary-build'
         run: |
           cd ..
-          Rscript -e "Sys.setenv(BIOCONDUCTOR_USE_CONTAINER_REPOSITORY=FALSE); install.packages('$(pwd)/${{steps.common.outputs.pkg}}', INSTALL_opts = '--build', update = TRUE, quiet = FALSE, dependencies=TRUE, force = TRUE, keep_outputs = TRUE, repos = NULL, type='source') if('${{steps.common.outputs.pkg}}' %in% rownames(installed.packages())) q(status = 0) else q(status = 1)" 2>&1 | tee ${{steps.common.outputs.logdir}}/${{steps.common.outputs.pkg}}-cont-binary.log
+          Rscript -e "Sys.setenv(BIOCONDUCTOR_USE_CONTAINER_REPOSITORY=FALSE); install.packages('$(pwd)/${{steps.common.outputs.pkg}}', INSTALL_opts = '--build', update = TRUE, quiet = FALSE, dependencies=TRUE, force = TRUE, keep_outputs = TRUE, repos = NULL, type='source'); if('${{steps.common.outputs.pkg}}' %in% rownames(installed.packages())) q(status = 0) else q(status = 1)" 2>&1 | tee ${{steps.common.outputs.logdir}}/${{steps.common.outputs.pkg}}-cont-binary.log
           mv *.tar.gz ${{steps.common.outputs.outdir}}/
 
       - if: matrix.config.type == 'deb-build'
