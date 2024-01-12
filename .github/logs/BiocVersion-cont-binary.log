@@ -1,0 +1,13 @@
+Installing package into ‘/usr/local/lib/R/site-library’
+(as ‘lib’ is unspecified)
+* installing *source* package ‘BiocVersion’ ...
+** using staged installation
+** help
+*** installing help indices
+** building package indices
+** testing if installed package can be loaded from temporary location
+** testing if installed package can be loaded from final location
+** testing if installed package keeps a record of temporary installation path
+* creating tarball
+packaged installation of ‘BiocVersion’ as ‘BiocVersion_3.18.1_R_x86_64-pc-linux-gnu.tar.gz’
+* DONE (BiocVersion)
