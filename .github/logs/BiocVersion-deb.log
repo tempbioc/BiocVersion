@@ -1,0 +1,104 @@
+BiocVersion starting
+Smartmatch is experimental at /usr/bin/dh-make-R line 63.
+I: Using repo=bioc from --repo
+I: Package source and binary name: r-bioc-biocversion
+W: Ignoring specified R dependency: R (>= 4.3.0)
+I: Package depends: 
+I: Package imports: 
+I: Package recommends: 
+I: Package suggests: 
+I: Package build-depends: debhelper-compat (= 13),
+               dh-r,
+               r-base-dev
+W: NeedsCompilation field is missing in DESCRIPTION
+W: This package NeedsCompilation: there are probably extra dependencies required
+W: Package SystemRequirements: ''
+I: Generating maintainers, uploaders, VCS entries for debian-r team
+I: Creating debian/
+I: writing debian/control
+I: writing debian/source/format
+I: writing debian/rules
+I: writing debian/watch
+I: writing debian/copyright
+I: Writing debian/changelog
+I: writing debian/salsa-ci.yml
+I: writing debian/upstream/metadata
+I: writing debian/tests/control
+Smartmatch is experimental at /usr/bin/dh-update-R line 46.
+I: Updating Build-Depends
+W: Ignoring specified R dependency: R (>= 4.3.0)
+W: NeedsCompilation field is missing in DESCRIPTION
+I: Using debhelper compat from build-depends: debhelper-compat (= 13)
+I: Updating binary Depends, Recommends, Suggests
+Note, using directory '.' to get the build dependencies
+Reading package lists...
+Building dependency tree...
+Reading state information...
+0 upgraded, 0 newly installed, 0 to remove and 16 not upgraded.
+dpkg-buildpackage: info: source package r-bioc-biocversion
+dpkg-buildpackage: info: source version 3.18.1-1
+dpkg-buildpackage: info: source distribution UNRELEASED
+dpkg-buildpackage: info: source changed by Bioc GHA Build <maintainer@bioconductor.org>
+ dpkg-source --before-build .
+dpkg-buildpackage: info: host architecture amd64
+ debian/rules clean
+dh clean --buildsystem R
+   dh_auto_clean -O--buildsystem=R
+   dh_autoreconf_clean -O--buildsystem=R
+   dh_clean -O--buildsystem=R
+ debian/rules binary
+dh binary --buildsystem R
+   dh_update_autotools_config -O--buildsystem=R
+   dh_autoreconf -O--buildsystem=R
+   dh_auto_configure -O--buildsystem=R
+   dh_auto_build -O--buildsystem=R
+   dh_auto_test -O--buildsystem=R
+   create-stamp debian/debhelper-build-stamp
+   dh_testroot -O--buildsystem=R
+   dh_prep -O--buildsystem=R
+   dh_auto_install --destdir=debian/r-bioc-biocversion/ -O--buildsystem=R
+I: R Package: BiocVersion Version: 3.18.1
+I: Building using R version 4.3.2-1.2204.0
+I: R API version: r-api-4.0
+I: Using built-time from d/changelog: Fri, 12 Jan 2024 03:44:24 +0000
+	mkdir -p /__w/BiocVersion/BiocVersion/debian/r-bioc-biocversion/usr/lib/R/site-library
+	R CMD INSTALL -l /__w/BiocVersion/BiocVersion/debian/r-bioc-biocversion/usr/lib/R/site-library --clean . "--built-timestamp='Fri, 12 Jan 2024 03:44:24 +0000'"
+* installing *source* package ‘BiocVersion’ ...
+** using staged installation
+** help
+*** installing help indices
+** building package indices
+** testing if installed package can be loaded from temporary location
+** testing if installed package can be loaded from final location
+** testing if installed package keeps a record of temporary installation path
+* DONE (BiocVersion)
+Use of uninitialized value $dep_line in substitution (s///) at /usr/share/perl5/Dpkg/Deps.pm line 300.
+Use of uninitialized value $dep_line in substitution (s///) at /usr/share/perl5/Dpkg/Deps.pm line 301.
+Use of uninitialized value $dep_line in split at /usr/share/perl5/Dpkg/Deps.pm line 304.
+W: Ignoring specified R dependency: R (>= 4.3.0)
+W: Impossible to determine BioConductor release from DESCRIPTION file! Is there a 'git_branch' field?
+I: Use r-bioc-biocversion as Debian binary package for variables substitution
+   dh_installdocs -O--buildsystem=R
+   dh_installchangelogs -O--buildsystem=R
+   dh_installsystemduser -O--buildsystem=R
+   dh_perl -O--buildsystem=R
+   dh_link -O--buildsystem=R
+   dh_strip_nondeterminism -O--buildsystem=R
+   dh_compress -O--buildsystem=R
+   dh_fixperms -O--buildsystem=R
+   dh_missing -O--buildsystem=R
+   dh_dwz -a -O--buildsystem=R
+   dh_strip -a -O--buildsystem=R
+   dh_makeshlibs -a -O--buildsystem=R
+   dh_shlibdeps -a -O--buildsystem=R
+   dh_installdeb -O--buildsystem=R
+   dh_gencontrol -O--buildsystem=R
+dpkg-gencontrol: warning: Depends field of package r-bioc-biocversion: substitution variable ${shlibs:Depends} used, but is not defined
+   dh_md5sums -O--buildsystem=R
+   dh_builddeb -O--buildsystem=R
+dpkg-deb: building package 'r-bioc-biocversion' in '../r-bioc-biocversion_3.18.1-1_amd64.deb'.
+ dpkg-genbuildinfo --build=binary -O../r-bioc-biocversion_3.18.1-1_amd64.buildinfo
+ dpkg-genchanges --build=binary -O../r-bioc-biocversion_3.18.1-1_amd64.changes
+dpkg-genchanges: info: binary-only upload (no source code included)
+ dpkg-source --after-build .
+dpkg-buildpackage: info: binary-only upload (no source included)
