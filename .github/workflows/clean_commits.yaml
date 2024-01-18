@@ -1,0 +1,16 @@
+on:
+  push:
+  workflow_dispatch:
+
+name: Commit cleanup
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - id: common
+        run: |
+          branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}
+          bash .github/scripts/remove_merge_empty_commits.sh "$branch"
