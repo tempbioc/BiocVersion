@@ -16,11 +16,12 @@ git log --format="%H" --reverse --no-merges | tail -n +2 | while read -r commit_
 done
 
 if [ -s "$merge_file" ] || [ -s "$empty_file" ]; then
-  git push origin HEAD:"save_$branch_$(git log -1 --format='%H')"
+  currhash=$(git log -1 --format='%H')
+  git push origin HEAD:"save_$currhash"
   while IFS= read -r merge_commit_hash || [[ -n "$merge_commit_hash" ]]; do
     echo $merge_commit_hash
     git rebase --onto "${merge_commit_hash}^" "$merge_commit_hash"
   done < <(cat $merge_file $empty_file | sort -r -k2,2 -n | awk '{print $1}')
 
- git push origin HEAD:"$branch" --force
+  git diff --quiet HEAD origin/save_$currhash && git push origin HEAD:"$branch" --force
 fi
