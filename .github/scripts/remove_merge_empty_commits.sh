@@ -4,8 +4,8 @@ branch="$1"
 merge_file="/tmp/merge"
 empty_file="/tmp/empty"
 
-rm merge_file
-rm empty_file
+rm "$merge_file"
+rm "$empty_file"
 
 git log --merges --format="%H %s" > "$merge_file"
 
@@ -18,8 +18,9 @@ done
 if [ -s "$merge_file" ] || [ -s "$empty_file" ]; then
   git push origin HEAD:"save_$branch_$(git log -1 --format='%H')"
   while IFS= read -r merge_commit_hash || [[ -n "$merge_commit_hash" ]]; do
-    git rebase --onto "$merge_commit_hash"^ "$merge_commit_hash"
-  done < <(cat merge_file empty_file | awk '{print $1}')
+    echo $merge_commit_hash
+    git rebase --onto "${merge_commit_hash}^" "$merge_commit_hash"
+  done < <(cat $merge_file $empty_file | awk '{print $1}')
 
-  git push origin HEAD:"$branch" --force
+ git push origin HEAD:"$branch" --force
 fi
